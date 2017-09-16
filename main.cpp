@@ -1,35 +1,69 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
+#include "EBSTNode.h"
+#include "EBST.h"
 
 using namespace std;
 
-static int DEFAULT_ARGUMENT = 1;
+static int QUANTITY_DEFAULT_ARGUMENTS = 1;
 
 int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
-    int quantityCommandLineArgumentsWithoutDefaultArgument = quantityCommandLineArguments - DEFAULT_ARGUMENT;
+    int quantityCommandLineArgumentsWithoutDefaultArgument = quantityCommandLineArguments - QUANTITY_DEFAULT_ARGUMENTS;
 
     if (quantityCommandLineArgumentsWithoutDefaultArgument == 0) {
+        EBST *tree = new EBST();
         string rawKeyboardData;
-        vector<int> keyboardData;
-        istringstream streamedRawKeyboardData;
+        vector<string> keyboardData;
         string keyboardDatum;
 
         getline(cin, rawKeyboardData);
-        streamedRawKeyboardData = istringstream(rawKeyboardData);
+        istringstream streamedRawKeyboardData = istringstream(rawKeyboardData);
 
         while (getline(streamedRawKeyboardData, keyboardDatum, ' ')) {
             try {
-                cout << stoi(keyboardDatum) << "\n";
-                keyboardData.push_back(stoi(keyboardDatum));
+                keyboardData.push_back(keyboardDatum);
             } catch (invalid_argument &e) { //TODO: Name and implementation
-                cout << "Cannot convert string \"" + keyboardDatum + "\" to integer! Ignoring and continuing." << "\n";
+                cout << "Cannot convert string \"" + keyboardDatum + "\" to integer! Ignoring and continuing."
+                     << "\n"; //TODO need appropriate name
+                return 1; //TODO
             }
+        }
+
+        for (auto keyboardDatum : keyboardData) {
+            char lastChar = keyboardDatum[keyboardDatum.length() - 1];
+
+            cout << lastChar;
+
+            if (tree->digitIsInTreeFromThisNode(lastChar, tree->getRoot())) {
+                EBSTNode *nodeContainingDigit = tree->nodeContainingDigit(lastChar, tree->getRoot());
+                vector<string> matchingStringsInNodeContainingDigit = nodeContainingDigit->getMatchingStrings();
+                matchingStringsInNodeContainingDigit.push_back(keyboardDatum);
+                nodeContainingDigit->setMatchingStrings(matchingStringsInNodeContainingDigit);
+            } else {
+                tree->insertNewNodeWithDigit(lastChar, tree->getRoot(), 0);
+            }
+        }
+
+        string x = tree->toString(); //TODO Implement
+        cout << endl << "X: \"" << x << "\"." << endl;
+
+        const int PREORDER = 0;
+        const int INORDER = 1;
+        const int POSTORDER = 2;
+        int traversal = INORDER;
+        switch (traversal) {
+            case PREORDER:
+                break;
+            case INORDER:
+                break;
+            case POSTORDER:
+                break;
+            default:
+                break;
         }
     } else if (quantityCommandLineArgumentsWithoutDefaultArgument == 1) {
         cout << commandLineArguments[1];
-    } else {
         //TODO
     }
 
