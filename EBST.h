@@ -20,9 +20,9 @@ public:
 
     void setHeight(int height);
 
-    bool digitIsInTreeFromThisNode(int digit, EBSTNode *currentNode);
+    bool digitIsInTreeFromThisNode(char digit, EBSTNode *currentNode);
 
-    EBSTNode *nodeContainingDigit(int digit, EBSTNode *currentNode);
+    EBSTNode *nodeContainingDigit(char digit, EBSTNode *currentNode);
 
     void *insertNewNodeWithDigit(char digit, EBSTNode *currentNode, int level);
 

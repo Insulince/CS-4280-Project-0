@@ -14,7 +14,7 @@ void EBSTNode::setLevel(int level) {
 }
 
 char EBSTNode::getDigit() const {
-    return digit - '0';
+    return digit;
 }
 
 void EBSTNode::setDigit(char digit) {
@@ -51,5 +51,28 @@ EBSTNode *EBSTNode::getParentNode() const {
 
 void EBSTNode::setParentNode(EBSTNode *parentNode) {
     EBSTNode::parentNode = parentNode;
+}
+
+string EBSTNode::toString() {
+    string str = "";
+
+    for (auto i = 0; i < getLevel(); i++) {
+        str += "    ";
+    }
+
+    for (auto s : getMatchingStrings()) {
+        str += s + " ";
+    }
+
+    str += "\n";
+
+    if (getLeftChild() != nullptr) {
+        str += getLeftChild()->toString();
+    }
+    if (getRightChild() != nullptr) {
+        str += getRightChild()->toString();
+    }
+
+    return str;
 }
 

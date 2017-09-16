@@ -33,20 +33,25 @@ int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
         for (auto keyboardDatum : keyboardData) {
             char lastChar = keyboardDatum[keyboardDatum.length() - 1];
 
-            cout << lastChar;
-
             if (tree->digitIsInTreeFromThisNode(lastChar, tree->getRoot())) {
+                cout << "\nInserting \"" << lastChar << "\" into already existing node.\n";
                 EBSTNode *nodeContainingDigit = tree->nodeContainingDigit(lastChar, tree->getRoot());
                 vector<string> matchingStringsInNodeContainingDigit = nodeContainingDigit->getMatchingStrings();
                 matchingStringsInNodeContainingDigit.push_back(keyboardDatum);
                 nodeContainingDigit->setMatchingStrings(matchingStringsInNodeContainingDigit);
             } else {
+                cout << "\nInserting \"" << lastChar << "\" into new node.\n";
                 tree->insertNewNodeWithDigit(lastChar, tree->getRoot(), 0);
+
+                EBSTNode *nodeContainingDigit = tree->nodeContainingDigit(lastChar, tree->getRoot());
+                vector<string> matchingStringsInNodeContainingDigit = nodeContainingDigit->getMatchingStrings();
+                matchingStringsInNodeContainingDigit.push_back(keyboardDatum);
+                nodeContainingDigit->setMatchingStrings(matchingStringsInNodeContainingDigit);
             }
         }
 
-        string x = tree->toString(); //TODO Implement
-        cout << endl << "X: \"" << x << "\"." << endl;
+        string x = tree->toString();
+        cout << endl << "X:\n" << x << endl;
 
         const int PREORDER = 0;
         const int INORDER = 1;

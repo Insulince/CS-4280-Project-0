@@ -45,6 +45,8 @@ public:
     EBSTNode *getParentNode() const;
 
     void setParentNode(EBSTNode *parentNode);
+
+    string toString();
 };
 
 #endif //P0_NODE_H
