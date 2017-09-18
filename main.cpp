@@ -12,7 +12,7 @@ int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
     int quantityCommandLineArgumentsWithoutDefaultArgument = quantityCommandLineArguments - QUANTITY_DEFAULT_ARGUMENTS;
 
     if (quantityCommandLineArgumentsWithoutDefaultArgument == 0) {
-        EBST *tree = new EBST();
+        auto *tree = new EBST();
         string rawKeyboardData;
         vector<string> keyboardData;
         string keyboardDatum;

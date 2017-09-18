@@ -8,25 +8,25 @@ private:
     EBSTNode *root = nullptr;
     int height;
 public:
-    explicit EBST();
+    EBST();
 
-    virtual ~EBST();
+    ~EBST();
 
     EBSTNode *getRoot() const;
 
-    void setRoot(EBSTNode *root);
+    const void setRoot(EBSTNode *root);
 
-    int getHeight() const;
+    const int getHeight() const;
 
-    void setHeight(int height);
+    const void setHeight(const int height);
 
-    bool digitIsInTreeFromThisNode(char digit, EBSTNode *currentNode);
+    const bool digitIsInTreeFromThisNode(const char digit, const EBSTNode *currentNode) const;
 
-    EBSTNode *nodeContainingDigit(char digit, EBSTNode *currentNode);
+    EBSTNode *nodeContainingDigit(const char digit, EBSTNode *currentNode) const;
 
-    void *insertNewNodeWithDigit(char digit, EBSTNode *currentNode, int level);
+    const void *insertNewNodeWithDigit(const char digit, EBSTNode *currentNode, const int level);
 
-    string toString();
+    const string toString() const;
 };
 
 #endif //P0_EBST_H

@@ -8,19 +8,19 @@ EBSTNode *EBST::getRoot() const {
     return root;
 }
 
-void EBST::setRoot(EBSTNode *root) {
+const void EBST::setRoot(EBSTNode *root) {
     EBST::root = root;
 }
 
-int EBST::getHeight() const {
+const int EBST::getHeight() const {
     return height;
 }
 
-void EBST::setHeight(int height) {
+const void EBST::setHeight(const int height) {
     EBST::height = height;
 }
 
-bool EBST::digitIsInTreeFromThisNode(char digit, EBSTNode *currentNode) {
+const bool EBST::digitIsInTreeFromThisNode(const char digit, const EBSTNode *currentNode) const {
     if (currentNode == nullptr) {
         return false;
     } else if (currentNode->getDigit() == digit) {
@@ -32,7 +32,7 @@ bool EBST::digitIsInTreeFromThisNode(char digit, EBSTNode *currentNode) {
     }
 }
 
-EBSTNode *EBST::nodeContainingDigit(char digit, EBSTNode *currentNode) {
+EBSTNode *EBST::nodeContainingDigit(const char digit, EBSTNode *currentNode) const {
     if (currentNode == nullptr) {
         return nullptr;
     } else if (currentNode->getDigit() == digit) {
@@ -44,27 +44,26 @@ EBSTNode *EBST::nodeContainingDigit(char digit, EBSTNode *currentNode) {
     }
 }
 
-void *EBST::insertNewNodeWithDigit(char digit, EBSTNode *currentNode, int level) {
+const void *EBST::insertNewNodeWithDigit(const char digit, EBSTNode *currentNode, const int level) {
     if (currentNode == nullptr) {
-        auto *root = new EBSTNode(digit, nullptr, level);
-        setRoot(root);
+        setRoot(new EBSTNode(digit, nullptr, ROOT_LEVEL));
     } else if (digit < currentNode->getDigit()) {
         if (currentNode->getLeftChild() == nullptr) {
-            auto *newNode = new EBSTNode(digit, currentNode, ++level);
+            auto *newNode = new EBSTNode(digit, currentNode, level + 1);
             currentNode->setLeftChild(newNode);
         } else {
-            insertNewNodeWithDigit(digit, currentNode->getLeftChild(), ++level);
+            insertNewNodeWithDigit(digit, currentNode->getLeftChild(), level + 1);
         }
     } else {
         if (currentNode->getRightChild() == nullptr) {
-            auto *newNode = new EBSTNode(digit, currentNode, ++level);
+            auto *newNode = new EBSTNode(digit, currentNode, level + 1);
             currentNode->setRightChild(newNode);
         } else {
-            insertNewNodeWithDigit(digit, currentNode->getRightChild(), ++level);
+            insertNewNodeWithDigit(digit, currentNode->getRightChild(), level + 1);
         }
     }
 }
 
-string EBST::toString() {
+const string EBST::toString() const {
     return getRoot()->toString();
 }

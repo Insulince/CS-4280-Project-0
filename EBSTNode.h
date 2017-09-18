@@ -7,46 +7,40 @@
 
 using namespace std;
 
-const int ROOT = 0;
+const static int ROOT_LEVEL = 0;
 
 class EBSTNode {
 private:
-    int level;
-    char digit;
-    EBSTNode *parentNode = nullptr;
+    const char digit;
+    const EBSTNode *parentNode = nullptr;
+    const int level;
     EBSTNode *leftChild = nullptr;
     EBSTNode *rightChild = nullptr;
     vector<string> matchingStrings;
 public:
-    explicit EBSTNode(char digit, EBSTNode *parentNode, int level);
+    EBSTNode(const char digit, const EBSTNode *parentNode, const int level);
 
-    virtual ~EBSTNode();
+    ~EBSTNode();
 
-    int getLevel() const;
+    const int getDigit() const;
 
-    void setLevel(int level);
+    const EBSTNode *getParentNode() const;
 
-    char getDigit() const;
-
-    void setDigit(char digit);
+    const int getLevel() const;
 
     EBSTNode *getLeftChild() const;
 
-    void setLeftChild(EBSTNode *leftChild);
+    const void setLeftChild(EBSTNode *leftChild);
 
     EBSTNode *getRightChild() const;
 
-    void setRightChild(EBSTNode *rightChild);
+    const void setRightChild(EBSTNode *rightChild);
 
     const vector<string> &getMatchingStrings() const;
 
-    void setMatchingStrings(const vector<string> &matchingStrings);
+    const void setMatchingStrings(const vector<string> &matchingStrings);
 
-    EBSTNode *getParentNode() const;
-
-    void setParentNode(EBSTNode *parentNode);
-
-    string toString();
+    const string toString() const;
 };
 
 #endif //P0_NODE_H
