@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #include "EBSTNode.h"
 #include "EBST.h"
 
@@ -50,16 +51,31 @@ int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
             }
         }
 
-        string treeTraversalString = tree->toString(PREORDER);
-        cout << endl << "PREORDER:\n" << treeTraversalString << endl;
-        treeTraversalString = tree->toString(INORDER);
-        cout << endl << "INORDER:\n" << treeTraversalString << endl;
-        treeTraversalString = tree->toString(POSTORDER);
-        cout << endl << "POSTORDER:\n" << treeTraversalString << endl;
+        ofstream tempFile;
+
+        string preorderTraversal = tree->toString(PREORDER);
+        tempFile.open("out.preorder");
+        tempFile << preorderTraversal;
+        tempFile.close();
+        cout << "PREORDER:\n" << preorderTraversal;
+
+        string inorderTraversal = tree->toString(INORDER);
+        tempFile.open("out.inorder");
+        tempFile << inorderTraversal;
+        tempFile.close();
+        cout << "INORDER:\n" << inorderTraversal;
+
+        string postorderTraversal = tree->toString(POSTORDER);
+        tempFile.open("out.postorder");
+        tempFile << postorderTraversal;
+        tempFile.close();
+        cout << "POSTORDER:\n" << postorderTraversal;
 
     } else if (quantityCommandLineArgumentsWithoutDefaultArgument == 1) {
         cout << commandLineArguments[1];
         //TODO
+    } else {
+
     }
 
     return 0;

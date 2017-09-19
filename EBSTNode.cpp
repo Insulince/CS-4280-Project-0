@@ -45,7 +45,7 @@ const void EBSTNode::setMatchingStrings(const vector<string> &matchingStrings) {
     EBSTNode::matchingStrings = matchingStrings;
 }
 
-const string EBSTNode::toString(const TRAVERSAL traversal) const { //TODO: Implement traversals here
+const string EBSTNode::toString(const TRAVERSAL traversal) const {
     string output = "";
 
     switch (traversal) {
@@ -76,12 +76,17 @@ const string EBSTNode::processMatchingStrings() const {
     string output = "";
 
     for (auto i = 0; i < getLevel(); i++) {
-        output += TAB;
+        output += TAB + TAB;
     }
 
+    output += static_cast<char>(getDigit());
+
+    string joinedMatchingStrings = "";
     for (const auto &matchingString : getMatchingStrings()) {
-        output += matchingString + " ";
+        joinedMatchingStrings = " " + matchingString + joinedMatchingStrings;
     }
+
+    output += joinedMatchingStrings;
 
     output += "\n";
 
