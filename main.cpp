@@ -50,23 +50,13 @@ int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
             }
         }
 
-        string x = tree->toString();
-        cout << endl << "X:\n" << x << endl;
+        string treeTraversalString = tree->toString(PREORDER);
+        cout << endl << "PREORDER:\n" << treeTraversalString << endl;
+        treeTraversalString = tree->toString(INORDER);
+        cout << endl << "INORDER:\n" << treeTraversalString << endl;
+        treeTraversalString = tree->toString(POSTORDER);
+        cout << endl << "POSTORDER:\n" << treeTraversalString << endl;
 
-        const int PREORDER = 0;
-        const int INORDER = 1;
-        const int POSTORDER = 2;
-        int traversal = INORDER;
-        switch (traversal) {
-            case PREORDER:
-                break;
-            case INORDER:
-                break;
-            case POSTORDER:
-                break;
-            default:
-                break;
-        }
     } else if (quantityCommandLineArgumentsWithoutDefaultArgument == 1) {
         cout << commandLineArguments[1];
         //TODO

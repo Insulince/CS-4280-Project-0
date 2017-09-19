@@ -1,6 +1,10 @@
 #include "EBSTNode.h"
 
-EBSTNode::EBSTNode(const char digit, const EBSTNode *parentNode, const int level) : digit(digit), parentNode(parentNode), level(level) {
+using namespace std;
+
+EBSTNode::EBSTNode(const char digit, const EBSTNode *parentNode, const int level) : digit(digit),
+                                                                                    parentNode(parentNode),
+                                                                                    level(level) {
 }
 
 EBSTNode::~EBSTNode() = default;
@@ -41,25 +45,65 @@ const void EBSTNode::setMatchingStrings(const vector<string> &matchingStrings) {
     EBSTNode::matchingStrings = matchingStrings;
 }
 
-const string EBSTNode::toString() const {
-    string str;
+const string EBSTNode::toString(const TRAVERSAL traversal) const { //TODO: Implement traversals here
+    string output = "";
+
+    switch (traversal) {
+        case PREORDER:
+            output += processMatchingStrings();
+            output += processLeftChildsMatchingStrings(traversal);
+            output += processRightChildsMatchingStrings(traversal);
+            break;
+        case INORDER:
+            output += processLeftChildsMatchingStrings(traversal);
+            output += processMatchingStrings();
+            output += processRightChildsMatchingStrings(traversal);
+            break;
+        case POSTORDER:
+            output += processLeftChildsMatchingStrings(traversal);
+            output += processRightChildsMatchingStrings(traversal);
+            output += processMatchingStrings();
+            break;
+        default:
+            break;
+    }
+
+    return output;
+}
+
+const string EBSTNode::processMatchingStrings() const {
+    const string TAB = "   ";
+    string output = "";
 
     for (auto i = 0; i < getLevel(); i++) {
-        str += "    ";
+        output += TAB;
     }
 
-    for (auto s : getMatchingStrings()) {
-        str += s + " ";
+    for (const auto &matchingString : getMatchingStrings()) {
+        output += matchingString + " ";
     }
 
-    str += "\n";
+    output += "\n";
+
+    return output;
+}
+
+const string EBSTNode::processLeftChildsMatchingStrings(const TRAVERSAL traversal) const {
+    string output = "";
 
     if (getLeftChild() != nullptr) {
-        str += getLeftChild()->toString();
-    }
-    if (getRightChild() != nullptr) {
-        str += getRightChild()->toString();
+        output += getLeftChild()->toString(traversal);
     }
 
-    return str;
+    return output;
+}
+
+const string EBSTNode::processRightChildsMatchingStrings(const TRAVERSAL traversal) const {
+    string output = "";
+
+    if (getRightChild() != nullptr) {
+        output += getRightChild()->toString(traversal);
+    }
+
+    return output;
 }

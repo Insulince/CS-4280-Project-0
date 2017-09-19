@@ -26,7 +26,7 @@ public:
 
     const void *insertNewNodeWithDigit(const char digit, EBSTNode *currentNode, const int level);
 
-    const string toString() const;
+    const std::string toString(const TRAVERSAL traversal) const;
 };
 
 #endif //P0_EBST_H

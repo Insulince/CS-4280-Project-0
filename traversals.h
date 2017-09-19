@@ -1,6 +1,10 @@
 #ifndef P0_TRAVERSALS_H
 #define P0_TRAVERSALS_H
 
-
+enum TRAVERSAL {
+    PREORDER,
+    INORDER,
+    POSTORDER
+};
 
 #endif //P0_TRAVERSALS_H

@@ -1,5 +1,7 @@
 #include "EBST.h"
 
+using namespace std;
+
 EBST::EBST() = default;
 
 EBST::~EBST() = default;
@@ -64,6 +66,6 @@ const void *EBST::insertNewNodeWithDigit(const char digit, EBSTNode *currentNode
     }
 }
 
-const string EBST::toString() const {
-    return getRoot()->toString();
+const string EBST::toString(const TRAVERSAL traversal) const {
+    return getRoot()->toString(traversal);
 }

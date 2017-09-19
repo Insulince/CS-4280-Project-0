@@ -4,8 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-using namespace std;
+#include "traversals.h"
 
 const static int ROOT_LEVEL = 0;
 
@@ -16,7 +15,7 @@ private:
     const int level;
     EBSTNode *leftChild = nullptr;
     EBSTNode *rightChild = nullptr;
-    vector<string> matchingStrings;
+    std::vector<std::string> matchingStrings;
 public:
     EBSTNode(const char digit, const EBSTNode *parentNode, const int level);
 
@@ -36,11 +35,17 @@ public:
 
     const void setRightChild(EBSTNode *rightChild);
 
-    const vector<string> &getMatchingStrings() const;
+    const std::vector<std::string> &getMatchingStrings() const;
 
-    const void setMatchingStrings(const vector<string> &matchingStrings);
+    const void setMatchingStrings(const std::vector<std::string> &matchingStrings);
 
-    const string toString() const;
+    const std::string toString(const TRAVERSAL traversal) const;
+
+    const std::string processMatchingStrings() const;
+
+    const std::string processLeftChildsMatchingStrings(const TRAVERSAL traversal) const;
+
+    const std::string processRightChildsMatchingStrings(const TRAVERSAL traversal) const;
 };
 
 #endif //P0_NODE_H
