@@ -6,7 +6,6 @@
 class EBST {
 private:
     EBSTNode *root = nullptr;
-    int height;
 public:
     EBST();
 
@@ -15,10 +14,6 @@ public:
     EBSTNode *getRoot() const;
 
     const void setRoot(EBSTNode *root);
-
-    const int getHeight() const;
-
-    const void setHeight(const int height);
 
     const bool digitIsInTreeFromThisNode(const char digit, const EBSTNode *currentNode) const;
 

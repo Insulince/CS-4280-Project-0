@@ -14,14 +14,6 @@ const void EBST::setRoot(EBSTNode *root) {
     EBST::root = root;
 }
 
-const int EBST::getHeight() const {
-    return height;
-}
-
-const void EBST::setHeight(const int height) {
-    EBST::height = height;
-}
-
 const bool EBST::digitIsInTreeFromThisNode(const char digit, const EBSTNode *currentNode) const {
     if (currentNode == nullptr) {
         return false;
