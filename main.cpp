@@ -8,9 +8,19 @@
 using namespace std;
 
 const static int EXIT_CODE_ILLEGAL_QUANTITY_ARGUMENTS = 1;
-const static char *ERROR_MESSAGE_ILLEGAL_QUANTITY_ARGUMENTS = "Invalid quantity of command line arguments encountered, pass either zero arguments for keyboard input, or one argument for file input.";
+const static char *ERROR_MESSAGE_ILLEGAL_QUANTITY_ARGUMENTS = "Invalid quantity of command line arguments encountered, pass either zero arguments for keyboard input, or one argument for file input.\n";
+const static char *ERROR_MESSAGE_NO_SUCH_FILE = "No file with the provided name exists: \"";
+const static char *ERROR_MESSAGE_INVALID_TREE_EMPTY_ROOT = "Invalid tree: This tree has no root (is your input data empty?).\n";
+const static char *ERROR_MESSAGE_INVALID_DATUM = "Datum is invalid: \"";
 
 const static int QUANTITY_DEFAULT_ARGUMENTS = 1;
+
+const static char validCharacters[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+const static int EXIT_CODE_SUCCESS = 0;
+const static int EXIT_CODE_NO_SUCH_INPUT_FILE = 2;
+const static int EXIT_CODE_INVALID_TREE_EMPTY_ROOT = 3;
+const static int EXIT_CODE_INVALID_DATUM = 4;
 
 const static char *KEYBOARD_MODE_OUTPUT_FILE_NAME = "out";
 const static char *IMPLICIT_INPUT_FILE_EXTENSION = ".fs17";
@@ -52,19 +62,29 @@ void writeInorderTraversalFile(const EBST *tree, const string &outputFileName);
 
 void writePostorderTraversalFile(const EBST *tree, const string &outputFileName);
 
+bool datumIsValid(const string lastCharInDatum);
+
 int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
     int quantityCommandLineArgumentsWithoutDefaultArgument = quantityCommandLineArguments - QUANTITY_DEFAULT_ARGUMENTS;
 
     if (noArgumentsPassed(quantityCommandLineArgumentsWithoutDefaultArgument)) {
-        runForKeyboardInput();
+        try {
+            runForKeyboardInput();
+        } catch (int &exitCode) {
+            return exitCode;
+        }
     } else if (oneArgumentPassed(quantityCommandLineArgumentsWithoutDefaultArgument)) {
-        runForFileInput(commandLineArguments);
+        try {
+            runForFileInput(commandLineArguments);
+        } catch (int &exitCode) {
+            return exitCode;
+        }
     } else {
-        cout << ERROR_MESSAGE_ILLEGAL_QUANTITY_ARGUMENTS << endl;
+        cerr << ERROR_MESSAGE_ILLEGAL_QUANTITY_ARGUMENTS << endl;
         return EXIT_CODE_ILLEGAL_QUANTITY_ARGUMENTS;
     }
 
-    return 0;
+    return EXIT_CODE_SUCCESS;
 }
 
 bool noArgumentsPassed(int quantityCommandLineArgumentsWithoutDefaultArgument) {
@@ -95,14 +115,24 @@ void runForFileInput(char *const *commandLineArguments) {
 }
 
 string getRawInputFileData(const string &inputFileName) {
-    ifstream inputFile;
-    string rawInputFileData;
+    ifstream inputFile(inputFileName + IMPLICIT_INPUT_FILE_EXTENSION);
 
-    inputFile.open(inputFileName + IMPLICIT_INPUT_FILE_EXTENSION);
-    getline(inputFile, rawInputFileData);
-    inputFile.close();
+    if (inputFile) {
+        string rawInputFileData;
+        string rawInputFileLine;
 
-    return rawInputFileData;
+        while (!inputFile.eof()) {
+            getline(inputFile, rawInputFileLine);
+            rawInputFileData += " " + rawInputFileLine;
+        }
+
+        inputFile.close();
+
+        return rawInputFileData;
+    } else {
+        cerr << ERROR_MESSAGE_NO_SUCH_FILE << inputFileName << "\"\n";
+        throw EXIT_CODE_NO_SUCH_INPUT_FILE;
+    }
 }
 
 void processData(const string &rawData, const string &fileName) {
@@ -137,17 +167,45 @@ EBST *buildTreeFromDataVector(const vector<string> &dataVector) {
     auto *tree = new EBST();
 
     for (auto datum : dataVector) {
-        char lastCharInDatum = datum[datum.length() - 1];
+        if (datumIsValid(datum)) {
+            char lastCharInDatum = datum[datum.length() - 1];
 
-        if (tree->digitIsInTreeFromThisNode(lastCharInDatum, tree->getRoot())) {
-            addDatumToTreeNode(tree, datum, lastCharInDatum);
+            if (tree->digitIsInTreeFromThisNode(lastCharInDatum, tree->getRoot())) {
+                addDatumToTreeNode(tree, datum, lastCharInDatum);
+            } else {
+                addNewNodeToTree(tree, lastCharInDatum);
+                addDatumToTreeNode(tree, datum, lastCharInDatum);
+            }
         } else {
-            addNewNodeToTree(tree, lastCharInDatum);
-            addDatumToTreeNode(tree, datum, lastCharInDatum);
+            cerr << ERROR_MESSAGE_INVALID_DATUM << datum << "\"\n";
+            throw EXIT_CODE_INVALID_DATUM;
         }
     }
 
-    return tree;
+    if (tree->getRoot() != nullptr) {
+        return tree;
+    } else {
+        cerr << ERROR_MESSAGE_INVALID_TREE_EMPTY_ROOT;
+        throw EXIT_CODE_INVALID_TREE_EMPTY_ROOT;
+    }
+}
+
+bool datumIsValid(const string datum) {
+    for (auto characterInDatum : datum) {
+        bool thisCharacterIsValid = false;
+
+        for (auto validCharacter : validCharacters) {
+            if (characterInDatum == validCharacter) {
+                thisCharacterIsValid = true;
+            }
+        }
+
+        if (!thisCharacterIsValid) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void addNewNodeToTree(EBST *tree, char lastCharInDatum) {
