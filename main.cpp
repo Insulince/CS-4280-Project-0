@@ -62,7 +62,7 @@ void writeInorderTraversalFile(const EBST *tree, const string &outputFileName);
 
 void writePostorderTraversalFile(const EBST *tree, const string &outputFileName);
 
-bool datumIsValid(const string lastCharInDatum);
+bool datumIsValid(const string datum);
 
 int main(int quantityCommandLineArguments, char *commandLineArguments[]) {
     int quantityCommandLineArgumentsWithoutDefaultArgument = quantityCommandLineArguments - QUANTITY_DEFAULT_ARGUMENTS;
@@ -142,14 +142,10 @@ void processData(const string &rawData, const string &fileName) {
 }
 
 vector<string> getDataVectorFromRawData(const string &rawData) {
-    istringstream streamedRawData = streamRawData(rawData);
+    istringstream streamedRawData(rawData);
     vector<string> dataVector = getDataVectorFromStreamedRawData(streamedRawData);
 
     return dataVector;
-}
-
-istringstream streamRawData(const string &rawData) {
-    return istringstream(rawData);
 }
 
 vector<string> getDataVectorFromStreamedRawData(istringstream &streamedRawData) {
